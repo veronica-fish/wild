@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TopUp USDT - WILD TEAM</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .hidden-view { display: none !important; }
+        
+        /* Animasi Spinner & Pulse */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .spinner { animation: spin 2s linear infinite; }
+        
+        /* List Style untuk FAQ */
+        .faq-list { list-style-type: decimal; padding-left: 1.25rem; }
+        .faq-list li { margin-bottom: 0.75rem; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Transisi Accordion */
+        .faq-content {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="flex justify-center min-h-screen text-gray-800">
+
+    <!-- WADAH UTAMA -->
+    <div class="w-full max-w-md bg-gray-50 shadow-2xl relative min-h-screen sm:rounded-3xl sm:my-4 overflow-hidden flex flex-col">
+        
+        <!-- ========================================== -->
+        <!-- VIEW 1: HALAMAN INPUT (Sebelum Klik Periksa) -->
+        <!-- ========================================== -->
+        <div id="view-input" class="flex-1 flex flex-col">
+            <!-- Header (Lebih Profesional) -->
+            <div class="bg-gradient-to-r from-blue-700 to-blue-500 text-white p-5 flex justify-between items-center relative z-50 shadow-md">
+                <div class="flex items-center gap-3">
+                    <!-- Logo USDT dengan efek bayangan -->
+                    <div class="bg-white p-1 rounded-full shadow-lg">
+                        <svg class="w-8 h-8 flex-shrink-0" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="16" cy="16" r="16" fill="#26A17B"/>
+                            <path d="M17.92 14.15v-2.12h3.7V8.8H10.38v3.23h3.7v2.12c-4.24.2-7.42 1.01-7.42 2.04s3.18 1.84 7.42 2.04v5.1h3.83v-5.1c4.23-.2 7.4-1.01 7.4-2.04s-3.17-1.84-7.4-2.04zm0 3.55v-.04c-.12.01-.7.04-1.9.04-1.3 0-2.04-.03-2.04-.03v.03c-2.77-.12-4.95-.58-4.95-1.12s2.18-1 4.95-1.12v1.68c.53.03 1.23.05 2.07.05 1.12 0 1.77-.03 1.87-.05v-1.68c2.77.12 4.95.58 4.95 1.12s-2.18 1-4.95 1.12z" fill="white"/>
+                        </svg>
+                    </div>
+                    <!-- Teks Judul & Sub-judul -->
+                    <div class="flex flex-col">
+                        <span class="font-bold text-lg leading-tight tracking-wide" data-i18n="headerTitle">Isi Saldo USDT</span>
+                        <span class="text-[10px] text-blue-100 tracking-widest font-semibold uppercase mt-0.5" data-i18n="headerSubtitle">WILD TEAM | STORE</span>
+                    </div>
+                </div>
+                
+                <!-- Tombol Pilih Bahasa -->
+                <div class="relative inline-block text-left">
+                    <button id="langBtn" class="flex items-center gap-1.5 text-sm font-semibold bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full backdrop-blur-sm transition-all focus:outline-none">
+                        <span class="text-base">🌐</span>
+                        <span id="currentLang">🇮🇩 ID</span>
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="langMenu" class="hidden absolute right-0 mt-2 w-36 rounded-xl shadow-2xl bg-white ring-1 ring-black ring-opacity-5 overflow-hidden z-50 transform origin-top-right transition-all">
+                        <div class="py-1" role="menu">
+                            <button onclick="changeLanguage('id', '🇮🇩 ID')" class="block w-full text-left px-4 py-2.5 text-sm text-gray-700 font-medium hover:bg-blue-50 hover:text-blue-600 transition-colors">🇮🇩 Indonesia</button>
+                            <button onclick="changeLanguage('en', '🇬🇧 EN')" class="block w-full text-left px-4 py-2.5 text-sm text-gray-700 font-medium hover:bg-blue-50 hover:text-blue-600 transition-colors">🇬🇧 English</button>
+                            <button onclick="changeLanguage('zh', '🇨🇳 ZH')" class="block w-full text-left px-4 py-2.5 text-sm text-gray-700 font-medium hover:bg-blue-50 hover:text-blue-600 transition-colors">🇨🇳 中国</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Konten Input -->
+            <div class="p-6 bg-white flex-1">
+                <div class="bg-blue-50 text-blue-700 text-sm font-medium py-2 px-4 rounded-lg text-center mb-6 flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span data-i18n="expiresAt">Berakhir pada:</span> <span id="timerInput" class="font-bold tracking-wider">1:00:00</span>
+                </div>
+                
+                <div class="space-y-5">
+                    <!-- Input Token -->
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5" data-i18n="tokenLabel">Token</label>
+                        <div class="relative">
+                            <select id="tokenSelect" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-800 font-semibold appearance-none outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                <option value="USDT" selected>USDT (Tether)</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Jaringan -->
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5" data-i18n="networkLabelInput">Jaringan</label>
+                        <div class="relative">
+                            <select id="networkSelect" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-800 font-semibold appearance-none outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                                <option value="" disabled selected data-i18n="selectNetwork">Pilih Jaringan</option>
+                                <option value="TRC20">Tron (TRC20)</option>
+                                <option value="BEP20">Binance Smart Chain (BEP20)</option>
+                                <option value="ERC20">Ethereum (ERC20)</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Nominal -->
+                    <div>
+                        <label for="amountInput" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5" data-i18n="topupAmountLabel">
+                            Nominal Topup
+                        </label>
+                        <div class="relative">
+                            <input type="number" id="amountInput" min="10" data-i18n-placeholder="topupPlaceholder" placeholder="Minimal 10 (Contoh: 10)" class="w-full p-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-800 font-semibold outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-16">
+                            <span class="absolute inset-y-0 right-0 flex items-center px-4 font-bold text-gray-400">USDT</span>
+                        </div>
+                        <p id="errorMsg" class="text-red-500 text-xs mt-1.5 font-medium hidden" data-i18n="errorMin">Nominal minimal topup adalah 10 USDT</p>
+                    </div>
+                </div>
+
+                <!-- Perkiraan Pembayaran -->
+                <div class="mt-10 bg-gray-50 p-4 rounded-xl border border-gray-100 flex justify-between items-center">
+                    <div>
+                        <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-1" data-i18n="estPayment">Perkiraan Pembayaran</p>
+                        <p class="text-2xl font-extrabold text-gray-800" id="paymentAmount">0 <span class="text-sm text-gray-400 font-medium">USDT</span></p>
+                    </div>
+                    <button id="checkBtn" onclick="processPayment()" class="bg-gray-300 text-white px-8 py-3 rounded-xl font-bold shadow-sm cursor-not-allowed transition-all" disabled data-i18n="btnCheck">
+                        Periksa
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VIEW 2: HALAMAN PEMBAYARAN (QR Code)       -->
+        <!-- ========================================== -->
+        <div id="view-payment" class="hidden-view pb-10 flex-1 overflow-y-auto bg-gray-50">
+            
+            <!-- Header Pembayaran -->
+            <div class="bg-white px-4 py-3 flex justify-between items-center border-b sticky top-0 z-40 shadow-sm">
+                <button onclick="backToInput()" class="flex items-center text-gray-600 font-semibold text-sm hover:text-blue-600 transition-colors">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    <span data-i18n="backToToken">Kembali</span>
+                </button>
+                <div class="flex items-center gap-1.5 text-xs font-semibold text-orange-500 bg-orange-50 px-3 py-1 rounded-full">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span id="timerPayment">1:00:00</span>
+                </div>
+            </div>
+
+            <!-- Konten Pembayaran -->
+            <div class="p-6 flex flex-col items-center">
+                
+                <!-- Total Diterima -->
+                <p class="text-gray-500 text-sm font-medium mt-2" data-i18n="totalReceived">Total Diterima</p>
+                <div class="flex items-baseline gap-1 mt-1 mb-6">
+                    <h2 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-blue-500" id="payCryptoAmount">0.00</h2>
+                    <span class="text-lg font-bold text-blue-600">USDT</span>
+                </div>
+
+                <!-- QR Code Image dengan Card -->
+                <div class="bg-white p-3 rounded-2xl shadow-lg border border-gray-100 relative group">
+                    <img id="qrCodeImage" src="" alt="QR Code" class="w-52 h-52 object-contain rounded-xl">
+                    <div class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
+                </div>
+
+                <!-- Kotak Alamat (Premium Card) -->
+                <div class="w-full mt-8 bg-white border border-gray-200 rounded-2xl p-5 shadow-sm relative overflow-hidden">
+                    <!-- Aksen garis atas -->
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-green-400"></div>
+
+                    <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2" data-i18n="sendUsdtTo">Kirim USDT ke alamat ini:</p>
+                    
+                    <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border border-gray-100 mb-4">
+                        <p class="text-blue-700 font-mono font-semibold text-sm break-all pr-2" id="walletAddress">-</p>
+                        <button onclick="copyToClipboard(document.getElementById('walletAddress').innerText, 'address')" class="text-gray-400 hover:text-blue-600 bg-white p-1.5 rounded-md shadow-sm border border-gray-200 flex-shrink-0 transition-colors" title="Copy">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        </button>
+                    </div>
+
+                    <!-- Peringatan -->
+                    <div class="bg-yellow-50 text-yellow-800 text-xs p-3 rounded-lg border-l-4 border-yellow-400 mb-5 leading-relaxed">
+                        <span class="font-bold">⚠️</span> <span data-i18n="warningNote">Catatan: Harap perhatikan alamat sebelum mengirim USDT, Kesalahan dalam memasukkan USDT maka saldo anda tidak akan bertambah.</span>
+                    </div>
+
+                    <!-- Detail Jaringan & Nilai Tukar -->
+                    <div class="text-sm space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-500 font-medium" data-i18n="networkLabel">Jaringan:</span>
+                            <span class="font-bold text-gray-800 bg-gray-100 px-2.5 py-1 rounded-md text-xs" id="payNetwork">-</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-500 font-medium" data-i18n="rateLabel">Nilai tukar:</span>
+                            <span class="font-semibold text-gray-800 text-xs" id="payRate">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Deteksi (Animasi Pulse) -->
+                <div class="w-full mt-8">
+                    <button class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 shadow-lg shadow-blue-500/30 animate-pulse">
+                        <svg class="w-5 h-5 spinner" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span data-i18n="detectingTx">Mendeteksi transaksi...</span>
+                    </button>
+                </div>
+
+                <!-- FAQ -->
+                <div class="w-full mt-10">
+                    <h3 class="font-extrabold text-xl mb-4 text-gray-800" data-i18n="faqTitle">FAQ</h3>
+                    
+                    <div class="space-y-2">
+                        <!-- FAQ 1 -->
+                        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                            <button class="w-full px-4 py-3 flex justify-between items-center text-left focus:outline-none hover:bg-gray-50 transition-colors" onclick="toggleFaq('faq1-content', 'faq1-icon')">
+                                <span class="font-semibold text-sm text-gray-800 pr-4" data-i18n="faq1">Bagaimana cara melakukan pembayaran?</span>
+                                <svg id="faq1-icon" class="w-5 h-5 text-gray-400 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div id="faq1-content" class="hidden faq-content px-4 pb-4 text-xs leading-relaxed text-gray-600 border-t border-gray-100">
+                                <ol class="faq-list mt-3">
+                                    <li data-i18n="faq1_ans_1">Tempelkan alamat pembayaran ke dompet Anda atau pindai kode QR dengan dompet Anda. Untuk mata uang yang mendukung tag/memo, pastikan Anda memasukkan tag/memo yang benar.</li>
+                                    <li data-i18n="faq1_ans_2">Di dompet Anda, tempelkan jumlah token yang tertunda untuk pesanan ke kolom jumlah di halaman "Kirim Aset". Harap diperhatikan: Jumlah yang diisi di sini adalah jumlah akhir yang diperlukan agar pesanan dapat diterima. Jika ada biaya jaringan, pastikan untuk memasukkannya saat mengisi jumlah.</li>
+                                    <li data-i18n="faq1_ans_3">Setelah memastikan bahwa token pembayaran Anda dan jaringan pengirim sesuai dengan informasi pembayaran CCPayment, kirimkan token tersebut.</li>
+                                    <li data-i18n="faq1_ans_4">Setelah kami mendeteksi transaksi Anda di jaringan blockchain, halaman pembayaran akan menampilkan informasi transaksi.</li>
+                                    <li data-i18n="faq1_ans_5">Setelah transaksi dikonfirmasi di blockchain, transaksi Anda akan selesai. Kecepatan konfirmasi dapat bervariasi tergantung pada beban jaringan blockchain.</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <!-- FAQ 2 -->
+                        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                            <button class="w-full px-4 py-3 flex justify-between items-center text-left focus:outline-none hover:bg-gray-50 transition-colors" onclick="toggleFaq('faq2-content', 'faq2-icon')">
+                                <span class="font-semibold text-sm text-gray-800 pr-4" data-i18n="faq2">Apa yang harus dilakukan jika masa berlaku pesanan telah habis?</span>
+                                <svg id="faq2-icon" class="w-5 h-5 text-gray-400 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div id="faq2-content" class="hidden faq-content px-4 pb-4 text-xs leading-relaxed text-gray-600 border-t border-gray-100">
+                                <p class="mb-2 mt-3 font-semibold text-gray-700" data-i18n="faq2_intro">Hal ini dapat terjadi dalam beberapa situasi:</p>
+                                <ol class="faq-list">
+                                    <li data-i18n="faq2_ans_1">Anda belum melakukan pembayaran dan batas waktu pembayaran telah berakhir.----- Mohon jangan melakukan pembayaran untuk pesanan yang sudah kedaluwarsa. Anda dapat membuat pesanan baru dan menyelesaikan pembayaran dalam periode validitas.</li>
+                                    <li data-i18n="faq2_ans_2">Jumlah yang Anda kirim tidak mencukupi. Pembayaran yang Anda lakukan akan ditransfer ke akun penjual setelah konfirmasi di blockchain. Disarankan untuk menghubungi penjual untuk membahas langkah selanjutnya.</li>
+                                    <li data-i18n="faq2_ans_3">Anda telah melakukan pembayaran yang cukup, tetapi transaksi masih diproses di blockchain. Jangan khawatir, pembayaran Anda akan ditransfer ke rekening penjual setelah konfirmasi di blockchain. Jika perlu, silakan hubungi penjual untuk membahas langkah selanjutnya!</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <!-- FAQ 3 -->
+                        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                            <button class="w-full px-4 py-3 flex justify-between items-center text-left focus:outline-none hover:bg-gray-50 transition-colors" onclick="toggleFaq('faq3-content', 'faq3-icon')">
+                                <span class="font-semibold text-sm text-gray-800 pr-4" data-i18n="faq3">Berapa lama waktu yang dibutuhkan untuk konfirmasi pembayaran?</span>
+                                <svg id="faq3-icon" class="w-5 h-5 text-gray-400 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div id="faq3-content" class="hidden faq-content px-4 pb-4 text-xs leading-relaxed text-gray-600 border-t border-gray-100 space-y-2">
+                                <p class="mt-3" data-i18n="faq3_ans_1">Waktu konfirmasi untuk pembayaran mata uang kripto bergantung pada kepadatan jaringan, tingkat biaya transaksi, dan jenis mata uang kripto.</p>
+                                <p data-i18n="faq3_ans_2">Secara umum, waktu konfirmasi pembayaran untuk sebagian besar mata uang kripto berkisar antara beberapa menit hingga beberapa puluh menit.</p>
+                                <p data-i18n="faq3_ans_3">Beberapa blockchain yang lebih lambat seperti jaringan USDT mungkin membutuhkan waktu lebih lama untuk mengkonfirmasi transaksi, tetapi meningkatkan biaya transaksi dapat mempercepat konfirmasi.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ 4 -->
+                        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                            <button class="w-full px-4 py-3 flex justify-between items-center text-left focus:outline-none hover:bg-gray-50 transition-colors" onclick="toggleFaq('faq4-content', 'faq4-icon')">
+                                <span class="font-semibold text-sm text-gray-800 pr-4" data-i18n="faq4">Apa yang harus saya lakukan jika saya lupa atau memasukkan Tag/Memo yang salah?</span>
+                                <svg id="faq4-icon" class="w-5 h-5 text-gray-400 transition-transform duration-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div id="faq4-content" class="hidden faq-content px-4 pb-4 text-xs leading-relaxed text-gray-600 border-t border-gray-100 space-y-2">
+                                <p class="mt-3" data-i18n="faq4_ans_1">Tag/Memo adalah kolom informasi tambahan yang digunakan dalam transaksi mata uang kripto untuk membedakan berbagai tujuan transaksi atau menentukan penerima.</p>
+                                <p data-i18n="faq4_ans_2">Saat mengisi formulir, pastikan Anda memasukkan Tag/Memo dengan benar agar transaksi dapat diproses. Tag/Memo yang salah dapat menyebabkan transaksi dikirim ke rekening yang salah, sehingga berisiko kehilangan aset.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- KAMUS BAHASA (LENGKAP) ---
+        const translations = {
+            id: {
+                headerTitle: "Isi Saldo USDT",
+                headerSubtitle: "WILD TEAM | STORE",
+                expiresAt: "Berakhir pada:",
+                tokenLabel: "Token",
+                networkLabelInput: "Jaringan",
+                selectNetwork: "Pilih Jaringan",
+                topupAmountLabel: "Nominal Topup Saldo:",
+                topupPlaceholder: "Minimal 10 (Contoh: 10)",
+                errorMin: "Nominal minimal topup adalah 10 USDT",
+                estPayment: "Perkiraan Pembayaran",
+                btnCheck: "Periksa",
+                faqTitle: "FAQ (Pertanyaan Umum)",
+                // FAQ 1
+                faq1: "Bagaimana cara melakukan pembayaran?",
+                faq1_ans_1: "Tempelkan alamat pembayaran ke dompet Anda atau pindai kode QR. Untuk mata uang yang mendukung tag/memo, pastikan Anda memasukkannya dengan benar.",
+                faq1_ans_2: "Di dompet Anda, tempelkan jumlah token yang tertunda ke kolom jumlah. Harap diperhatikan: Jumlah ini adalah jumlah akhir. Jika ada biaya jaringan, pastikan untuk memasukkannya.",
+                faq1_ans_3: "Setelah memastikan token dan jaringan sesuai dengan informasi pembayaran, kirimkan token tersebut.",
+                faq1_ans_4: "Setelah kami mendeteksi transaksi Anda di blockchain, halaman pembayaran akan menampilkan informasi transaksi.",
+                faq1_ans_5: "Setelah transaksi dikonfirmasi, transaksi selesai. Kecepatan konfirmasi bervariasi tergantung beban jaringan blockchain.",
+                // FAQ 2
+                faq2: "Apa yang harus dilakukan jika masa berlaku pesanan telah habis?",
+                faq2_intro: "Hal ini dapat terjadi dalam beberapa situasi:",
+                faq2_ans_1: "Anda belum melakukan pembayaran dan batas waktu telah berakhir. Mohon jangan melakukan pembayaran untuk pesanan yang sudah kedaluwarsa. Anda dapat membuat pesanan baru.",
+                faq2_ans_2: "Jumlah yang Anda kirim tidak mencukupi. Pembayaran akan ditransfer ke akun penjual setelah konfirmasi. Disarankan untuk menghubungi penjual.",
+                faq2_ans_3: "Anda telah melakukan pembayaran yang cukup, tetapi transaksi masih diproses. Jangan khawatir, pembayaran akan ditransfer setelah konfirmasi. Jika perlu, hubungi penjual.",
+                // FAQ 3
+                faq3: "Berapa lama waktu yang dibutuhkan untuk konfirmasi pembayaran?",
+                faq3_ans_1: "Waktu konfirmasi bergantung pada kepadatan jaringan, tingkat biaya transaksi, dan jenis mata uang kripto.",
+                faq3_ans_2: "Secara umum, waktu konfirmasi berkisar antara beberapa menit hingga beberapa puluh menit.",
+                faq3_ans_3: "Beberapa blockchain mungkin membutuhkan waktu lebih lama, tetapi meningkatkan biaya transaksi dapat mempercepat konfirmasi.",
+                // FAQ 4
+                faq4: "Apa yang harus saya lakukan jika saya lupa atau memasukkan Tag/Memo yang salah?",
+                faq4_ans_1: "Tag/Memo adalah kolom informasi tambahan dalam transaksi kripto untuk membedakan tujuan transaksi atau menentukan penerima.",
+                faq4_ans_2: "Pastikan Anda memasukkan Tag/Memo dengan benar. Tag/Memo yang salah dapat menyebabkan transaksi dikirim ke rekening yang salah, berisiko kehilangan aset.",
+                // Lainnya
+                timeUp: "Waktu Habis",
+                backToToken: "Kembali",
+                totalReceived: "Total Diterima",
+                sendUsdtTo: "Kirim USDT ke alamat ini:",
+                warningNote: "Catatan: Harap perhatikan alamat sebelum mengirim USDT, Kesalahan dalam memasukkan USDT maka saldo anda tidak akan bertambah.",
+                networkLabel: "Jaringan:",
+                rateLabel: "Nilai tukar:",
+                detectingTx: "Mendeteksi transaksi...",
+                copySuccess: "Berhasil disalin!",
+                copySuccessAddress: "Alamat berhasil disalin!"
+            },
+            en: {
+                headerTitle: "Top Up USDT",
+                headerSubtitle: "WILD TEAM | STORE",
+                expiresAt: "Expires at:",
+                tokenLabel: "Token",
+                networkLabelInput: "Network",
+                selectNetwork: "Select Network",
+                topupAmountLabel: "Top-up Amount:",
+                topupPlaceholder: "Min 10 (Example: 10)",
+                errorMin: "Minimum top-up is 10 USDT",
+                estPayment: "Estimated Payment",
+                btnCheck: "Check",
+                faqTitle: "FAQ (Frequently Asked Questions)",
+                // FAQ 1
+                faq1: "How to make a payment?",
+                faq1_ans_1: "Paste the payment address into your wallet or scan the QR code. For currencies with tags/memos, ensure you enter them correctly.",
+                faq1_ans_2: "In your wallet, paste the pending token amount. Note: This is the final amount. If there are network fees, include them.",
+                faq1_ans_3: "After ensuring the token and network match the payment info, send the tokens.",
+                faq1_ans_4: "Once we detect your transaction on the blockchain, the page will display the transaction info.",
+                faq1_ans_5: "After confirmation, the transaction is complete. Speed varies depending on network load.",
+                // FAQ 2
+                faq2: "What to do if the order expires?",
+                faq2_intro: "This can happen in several situations:",
+                faq2_ans_1: "You haven't paid and the deadline has passed. Please do not pay for an expired order. You can create a new one.",
+                faq2_ans_2: "The amount sent is insufficient. Payment will be transferred to the seller after confirmation. Contact the seller.",
+                faq2_ans_3: "You paid enough, but the transaction is still processing. Don't worry, it will be transferred after confirmation. Contact the seller if needed.",
+                // FAQ 3
+                faq3: "How long does payment confirmation take?",
+                faq3_ans_1: "Confirmation time depends on network congestion, fee levels, and cryptocurrency type.",
+                faq3_ans_2: "Generally, it ranges from a few minutes to tens of minutes.",
+                faq3_ans_3: "Some blockchains take longer, but increasing the fee can speed up confirmation.",
+                // FAQ 4
+                faq4: "What if I forget or enter the wrong Tag/Memo?",
+                faq4_ans_1: "Tag/Memo is additional info in crypto transactions to distinguish destinations or determine the recipient.",
+                faq4_ans_2: "Ensure you enter it correctly. A wrong Tag/Memo can send the transaction to the wrong account, risking asset loss.",
+                // Lainnya
+                timeUp: "Time's up",
+                backToToken: "Back",
+                totalReceived: "Total Received",
+                sendUsdtTo: "Send USDT to this address:",
+                warningNote: "Note: Please pay attention to the address before sending USDT. Errors will not increase your balance.",
+                networkLabel: "Network:",
+                rateLabel: "Exchange rate:",
+                detectingTx: "Detecting transaction...",
+                copySuccess: "Successfully copied!",
+                copySuccessAddress: "Address successfully copied!"
+            },
+            zh: {
+                headerTitle: "充值 USDT",
+                headerSubtitle: "WILD TEAM | STORE",
+                expiresAt: "结束于:",
+                tokenLabel: "代币",
+                networkLabelInput: "网络",
+                selectNetwork: "选择网络",
+                topupAmountLabel: "充值金额:",
+                topupPlaceholder: "最低 10 (例如: 10)",
+                errorMin: "最低充值金额为 10 USDT",
+                estPayment: "预计支付",
+                btnCheck: "检查",
+                faqTitle: "常见问题解答",
+                // FAQ 1
+                faq1: "如何付款？",
+                faq1_ans_1: "将收款地址粘贴到钱包中或扫描二维码。对于支持标签/备注的币种，请确保输入正确。",
+                faq1_ans_2: "在钱包中，粘贴待支付金额。注意：这是最终金额。如有网络手续费，请包含在内。",
+                faq1_ans_3: "确认代币和网络与支付信息一致后，发送代币。",
+                faq1_ans_4: "我们在区块链上检测到交易后，页面将显示交易信息。",
+                faq1_ans_5: "确认后，交易即完成。速度因网络负载而异。",
+                // FAQ 2
+                faq2: "订单过期了怎么办？",
+                faq2_intro: "这可能在以下几种情况下发生：",
+                faq2_ans_1: "尚未付款且期限已过。请勿对过期订单付款。您可以创建新订单。",
+                faq2_ans_2: "发送金额不足。付款将在确认后转入卖方账户。建议联系卖方。",
+                faq2_ans_3: "已支付足够金额，但交易仍在处理中。别担心，确认后将转入卖方账户。如有必要，请联系卖方。",
+                // FAQ 3
+                faq3: "付款确认需要多长时间？",
+                faq3_ans_1: "确认时间取决于网络拥堵、费率水平和加密货币类型。",
+                faq3_ans_2: "通常从几分钟到几十分钟不等。",
+                faq3_ans_3: "某些区块链耗时更长，但提高手续费可加快确认。",
+                // FAQ 4
+                faq4: "如果我忘记或输入了错误的标签/备注怎么办？",
+                faq4_ans_1: "标签/备注是加密货币交易中的附加信息，用于区分目的地或确定收款人。",
+                faq4_ans_2: "请确保输入正确。错误的标签/备注可能导致交易发送到错误的账户，存在资产损失风险。",
+                // Lainnya
+                timeUp: "时间到",
+                backToToken: "返回",
+                totalReceived: "总到账",
+                sendUsdtTo: "将 USDT 发送至此地址：",
+                warningNote: "注意：发送前请仔细核对地址。错误将导致余额无法增加。",
+                networkLabel: "网络：",
+                rateLabel: "汇率：",
+                detectingTx: "正在检测交易...",
+                copySuccess: "复制成功！",
+                copySuccessAddress: "地址复制成功！"
+            }
+        };
+
+        let currentLangCode = 'id';
+        let timeLeft = 1 * 3600; // 1 Jam
+        let timerInterval;
+
+        // --- KONFIGURASI JARINGAN & GAMBAR GITHUB ---
+        const networkConfig = {
+            'TRC20': {
+                address: 'TQMqM6ttoGydKbi3Xbohc4ZK6pidaDXKUV',
+                qrImage: 'https://raw.githubusercontent.com/veronica-fish/wild/main/img/trc.jpg',
+                fullName: 'Tron (TRC20)'
+            },
+            'BEP20': {
+                address: '0x00037d93F66d064F8A61EFEEF530A01c212Fc3c9',
+                qrImage: 'https://raw.githubusercontent.com/veronica-fish/wild/main/img/bep.jpg',
+                fullName: 'Binance Smart Chain (BEP20)'
+            },
+            'ERC20': {
+                address: '0x00037d93F66d064F8A61EFEEF530A01c212Fc3c9',
+                qrImage: 'https://raw.githubusercontent.com/veronica-fish/wild/main/img/erc.jpg',
+                fullName: 'Ethereum (ERC20)'
+            }
+        };
+
+        // --- FUNGSI UBAH BAHASA ---
+        window.changeLanguage = function(langCode, langName) {
+            currentLangCode = langCode;
+            document.getElementById('currentLang').innerText = langName;
+            document.getElementById('langMenu').classList.add('hidden');
+            
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[langCode][key]) {
+                    element.innerText = translations[langCode][key];
+                }
+            });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (translations[langCode][key]) {
+                    element.placeholder = translations[langCode][key];
+                }
+            });
+
+            if (timeLeft <= 0) {
+                document.getElementById('timerInput').innerText = translations[langCode].timeUp;
+                document.getElementById('timerPayment').innerText = translations[langCode].timeUp;
+            }
+        };
+
+        // --- FUNGSI ACCORDION FAQ ---
+        function toggleFaq(contentId, iconId) {
+            const content = document.getElementById(contentId);
+            const icon = document.getElementById(iconId);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+
+        // --- LOGIKA DROPDOWN BAHASA ---
+        const langBtn = document.getElementById('langBtn');
+        const langMenu = document.getElementById('langMenu');
+        langBtn.addEventListener('click', (e) => { e.stopPropagation(); langMenu.classList.toggle('hidden'); });
+        document.addEventListener('click', (e) => { if (!langMenu.contains(e.target) && e.target !== langBtn) langMenu.classList.add('hidden'); });
+
+        // --- LOGIKA TIMER MUNDUR ---
+        const timerInputEl = document.getElementById('timerInput');
+        const timerPaymentEl = document.getElementById('timerPayment');
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerInputEl.innerText = translations[currentLangCode].timeUp;
+                    timerPaymentEl.innerText = translations[currentLangCode].timeUp;
+                    document.getElementById('checkBtn').disabled = true;
+                    return;
+                }
+                
+                const h = Math.floor(timeLeft / 3600);
+                const m = Math.floor((timeLeft % 3600) / 60);
+                const s = timeLeft % 60;
+                
+                const timeString = `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                timerInputEl.innerText = timeString;
+                timerPaymentEl.innerText = timeString;
+
+                timeLeft--;
+            }, 1000);
+        }
+        startTimer();
+
+        // --- LOGIKA INPUT NOMINAL & VALIDASI ---
+        const networkSelect = document.getElementById('networkSelect');
+        const amountInput = document.getElementById('amountInput');
+        const checkBtn = document.getElementById('checkBtn');
+        const paymentAmount = document.getElementById('paymentAmount');
+        const errorMsg = document.getElementById('errorMsg');
+
+        function validateForm() {
+            const network = networkSelect.value;
+            const amount = parseFloat(amountInput.value);
+            const MIN_AMOUNT = 10;
+            const isAmountValid = !isNaN(amount) && amount >= MIN_AMOUNT;
+
+            if (amountInput.value !== "" && !isAmountValid) {
+                errorMsg.classList.remove('hidden'); 
+                amountInput.classList.add('border-red-500', 'bg-red-50'); 
+                amountInput.classList.remove('border-gray-200', 'bg-gray-50');
+            } else {
+                errorMsg.classList.add('hidden'); 
+                amountInput.classList.remove('border-red-500', 'bg-red-50');
+                amountInput.classList.add('border-gray-200', 'bg-gray-50');
+            }
+
+            if (isAmountValid) {
+                paymentAmount.innerHTML = `${amount.toFixed(2)} <span class="text-sm text-gray-400 font-medium">USDT</span>`;
+            } else {
+                paymentAmount.innerHTML = `0 <span class="text-sm text-gray-400 font-medium">USDT</span>`;
+            }
+
+            if (network !== "" && isAmountValid && timeLeft > 0) {
+                checkBtn.disabled = false;
+                checkBtn.classList.remove('bg-gray-300', 'cursor-not-allowed');
+                checkBtn.classList.add('bg-blue-600', 'hover:bg-blue-700', 'cursor-pointer', 'shadow-lg', 'shadow-blue-500/30');
+            } else {
+                checkBtn.disabled = true;
+                checkBtn.classList.add('bg-gray-300', 'cursor-not-allowed');
+                checkBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700', 'cursor-pointer', 'shadow-lg', 'shadow-blue-500/30');
+            }
+        }
+        amountInput.addEventListener('input', validateForm);
+        networkSelect.addEventListener('change', validateForm);
+
+        // --- PINDAH HALAMAN & PROSES PEMBAYARAN ---
+        function processPayment() {
+            const amountRaw = parseFloat(amountInput.value);
+            const amountFormatted = amountRaw.toFixed(2);
+            const selectedNetwork = networkSelect.value;
+            
+            const config = networkConfig[selectedNetwork];
+
+            if (config) {
+                document.getElementById('payCryptoAmount').innerText = amountFormatted;
+                document.getElementById('payNetwork').innerText = config.fullName;
+
+                const rateValue = 1.00000000; 
+                document.getElementById('payRate').innerText = `1 USDT ≈ ${rateValue.toFixed(8)} USDT`; 
+
+                document.getElementById('qrCodeImage').src = config.qrImage;
+                document.getElementById('walletAddress').innerText = config.address;
+            }
+
+            document.getElementById('view-input').classList.add('hidden-view');
+            document.getElementById('view-payment').classList.remove('hidden-view');
+        }
+
+        function backToInput() {
+            document.getElementById('view-payment').classList.add('hidden-view');
+            document.getElementById('view-input').classList.remove('hidden-view');
+        }
+
+        // --- FITUR SALIN (DENGAN TERJEMAHAN) ---
+        function copyToClipboard(text, type) {
+            navigator.clipboard.writeText(text).then(() => {
+                const msgKey = type === 'address' ? 'copySuccessAddress' : 'copySuccess';
+                alert(translations[currentLangCode][msgKey]);
+            }).catch(err => {
+                console.error('Gagal menyalin: ', err);
+            });
+        }
+    </script>
+</body>
+</html>
